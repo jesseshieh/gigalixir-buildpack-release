@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
+# 
+# is this ever actually used?
 
 cat <<EOF
 ---
 addons:
   []
 default_process_types:
-  web: /app/bin/$GIGALIXIR_APP_NAME $GIGALIXIR_COMMAND
+  web: /app/bin/$GIGALIXIR_APP_NAME start
 EOF
 

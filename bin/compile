@@ -123,17 +123,23 @@ chmod +w $cache_dir/out/$APP-$VERSION.tar.gz
 # determine capabilities of this slug
 # can eval run Elixir?
 output_section "Determining release capabilities"
-set +o errexit    # do not exit if there is an error
+capabilities_file="$cache_dir/out/capabilities"
+echo '{' > $capabilities_file
 
+set +o errexit    # do not exit if there is an error
 RESULT=$(_build/${RELEASE_ENV}/rel/$APP/bin/$APP eval 'IO.inspect 123+123' 2>&1)
 if [ $? -eq 0 ]; then
   if [ $RESULT -eq '246' ]; then
     # success. write out capabilities file. # capabilities file is gigalixir-only, heroku ignores.
-    echo '{"distillery": {"eval": "elixir"}}' > $cache_dir/out/capabilities
-    # so it can be deleted outside of container
-    chmod +w $cache_dir/out/capabilities
+    output_line "eval supports elixir capability"
+    echo '"distillery": {"eval": "elixir"}' >> $capabilities_file
   fi
 fi
+
+# change start command from foreground to start
+echo ', "start_command": "start"' >> $capabilities_file
 set -o errexit    # always exit on error
 
-
+echo '}' >> $capabilities_file
+# so it can be deleted outside of container
+chmod +w $cache_dir/out/capabilities
