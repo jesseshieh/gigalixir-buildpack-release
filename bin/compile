@@ -138,6 +138,7 @@ fi
 
 # change start command from foreground to start
 echo ', "start_command": "start"' >> $capabilities_file
+echo ', "remote_command": "remote"' >> $capabilities_file
 set -o errexit    # always exit on error
 
 echo '}' >> $capabilities_file
