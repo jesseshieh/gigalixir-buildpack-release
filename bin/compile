@@ -110,12 +110,10 @@ fi
 VERSION=`echo $DIRS | cut -d '/' -f 6`
 
 # create tarball
-TARBALL="_build/${RELEASE_ENV}/rel/$APP/releases/$VERSION/$APP.tar.gz"
-tar zcf $TARBALL --dereference -C _build/${RELEASE_ENV}/rel/$APP/ .
-
 mkdir -p $cache_dir/out
 rm -f $cache_dir/out/*
-cp $TARBALL $cache_dir/out/$APP-$VERSION.tar.gz
+TARBALL="$cache_dir/out/$APP-$VERSION.tar.gz"
+tar zcf $TARBALL --dereference -C _build/${RELEASE_ENV}/rel/$APP/ .
 
 # so it can be deleted outside of container
 chmod +w $cache_dir/out/$APP-$VERSION.tar.gz
